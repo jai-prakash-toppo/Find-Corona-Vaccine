@@ -39,6 +39,7 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
     Spinner state_Spinner;
     Spinner district_Spinner;
     TextView district_date_TextView;
+    Button district_search_Button;
     //ConstraintLayout district_ConstraintLayout;
     //RelativeLayout district_Calendar_RelativeLayout;
 
@@ -53,7 +54,7 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
     int selected_district_id;
     String selected_state;
     String selected_district;
-    String date_selected;
+    String selected_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
         state_Spinner = findViewById(R.id.state_Spinner);
         district_Spinner = findViewById(R.id.district_Spinner);
         district_date_TextView = findViewById(R.id.district_TextViewDate);
+        district_search_Button = findViewById(R.id.districtSearch_Button);
 
         //district_ConstraintLayout = (ConstraintLayout) findViewById(R.id.selectDistrict_ConstraintLayout);
         //district_Calendar_RelativeLayout = (RelativeLayout) findViewById(R.id.selectDistrict_RelativeLayout);
@@ -82,16 +84,17 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
         selected_state_id = -1;
         selected_district = "";
         selected_state = "";
-        date_selected = "";
+        selected_date = "";
 /*
         Intent dateSelected = getIntent();
-        date_selected = dateSelected.getStringExtra("Date");
-        if (date_selected.equals(""))
+        selected_date = dateSelected.getStringExtra("Date");
+        if (selected_date.equals(""))
             district_date_TextView.setText("Select Date");
         else
-            district_date_TextView.setText(date_selected);
+            district_date_TextView.setText(selected_date);
 */
         stateAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.select_dialog_item, states_list);
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         state_Spinner.setAdapter(stateAdapter);
 
         //Log.i("START", "#################################################");
@@ -100,6 +103,7 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
         //state_task.execute("https://cdn-api.co-vin.in/api/v2/admin/location/states");
 
         districtAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.select_dialog_item, districts_list);
+        districtAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         district_Spinner.setAdapter(districtAdapter);
 
         //Log.i("MIDDLE", "+++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -180,6 +184,7 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
                 getDate.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        i1 += 1;
                         String dd = " ", mm = " ", yy = " ";
                         if(i2<9)
                             dd = "0" + Integer.toString(i2);
@@ -191,32 +196,72 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
                             mm = Integer.toString(i1);
                         yy = Integer.toString(i);
 
-                        date_selected = dd + "-" + mm + "-" + yy;
-                        district_date_TextView.setText(date_selected);
+                        selected_date = dd + "-" + mm + "-" + yy;
+                        district_date_TextView.setText(selected_date);
                     }
                 });
 
             }
         });
 
+ /*       district_search_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getApplicationContext(), "State ID: " + Integer.toString(selected_state_id) + "\nState: " + selected_state + "\nDistrict ID: "
+                        //+ Integer.toString(selected_district_id) + " , " + "\nDistrict: " + selected_district + " , " + "\nDate: " + selected_date, Toast.LENGTH_SHORT).show();
+
+                String Vaccine_url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="
+                        + Integer.toString(selected_district_id) + "&date=" + selected_date;                                                     // url to get details for the APISetu
+
+                Log.i("INPUT","\nState ID: " + Integer.toString(selected_state_id) + "\nState: " + selected_state + "\nDistrict ID: "
+                        + Integer.toString(selected_district_id) + " , " + "\nDistrict: " + selected_district + " , " + "\nDate: " + selected_date);
+                Log.i("URL", Vaccine_url);
+
+
+                district_Spinner.endViewTransition(view);
+                state_Spinner.endViewTransition(view);
+
+                Intent vaccineDetails_intent = new Intent(SearchByDistrictName_activity.this, VaccinationList_activity.class);
+                vaccineDetails_intent.putExtra("Vaccine URL", Vaccine_url);
+                startActivity(vaccineDetails_intent);
+
+                Log.i("SEARCH", "END");
+            }
+        });
+
+
+  */
+
     }
 
     public void findVaccineByDistrict(View view) {
 
-        Toast.makeText(getApplicationContext(), "State ID: " + Integer.toString(selected_state_id) + "\nState: " + selected_state + "\nDistrict ID: "
-                + Integer.toString(selected_district_id) + " , " + "\nDistrict: " + selected_district, Toast.LENGTH_SHORT).show();
-        getVaccine getVaccineDetails = new getVaccine();
-        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=" + Integer.toString(selected_district_id) + "&date=" + date_selected;
-        getVaccineDetails.execute(url);
-
         //Todo: able to get state and districts from the setu API      --> Done
         //Todo: now add the calendar to get the date for vaccine and   --> Done
-        //Todo: finish this method for search button                   --> Done
-        //Todo: Create a RecylerView with CardView
-        //Todo: Retrive data from the JSON data received from SetuAPI
-        //Todo : Store the data in the ArrayList as per their tag
-        //Todo : Show the Vaccination data on the RecyclerView
+        //Todo: finish this method for search button                   --> Done But Not Happening
+        //Todo: Create a RecylerView with CardView                     --> Done
+        //Todo: Retrive data from the JSON data received from SetuAPI  --> Done But Not Happening
+        //Todo : Store the data in the ArrayList as per their tag      --> Done
+        //Todo : Show the Vaccination data on the RecyclerView         --> Done
         //Todo: To search from setu API for vaccine using District API and show the avaliable slot in a new acitivity using card view and recycler view
+
+        String Vaccine_url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="
+                + Integer.toString(selected_district_id) + "&date=" + selected_date;                                                     // url to get details for the APISetu
+
+        Log.i("INPUT","\nState ID: " + Integer.toString(selected_state_id) + "\nState: " + selected_state + "\nDistrict ID: "
+                + Integer.toString(selected_district_id) + " , " + "\nDistrict: " + selected_district + " , " + "\nDate: " + selected_date);
+        Log.i("URL", Vaccine_url);
+
+
+        //district_Spinner.endViewTransition(view);
+        //state_Spinner.endViewTransition(view);
+
+        Intent vaccineDetails_intent = new Intent(SearchByDistrictName_activity.this, VaccinationList_activity.class);
+        vaccineDetails_intent.putExtra("Vaccine URL", Vaccine_url);
+        startActivity(vaccineDetails_intent);
+
+        Log.i("SEARCH", "END");
+
     }
 
 
@@ -259,8 +304,17 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
                 ArrayList<String> allDistrict_ids = new ArrayList<>();
 
                 JSONObject jsonObject = new JSONObject(s);
+                /*Log.i("JSON", " \n \n ");
+                System.out.println(jsonObject);
+                Log.i("JSON", " \n \n ");
+                */
                 String jSONdistricts = jsonObject.getString("districts");
+                //Log.i("JSON OBJECT", " \n \n "+jSONdistricts+"\n \n ");
                 JSONArray districts_jsonArray = new JSONArray(jSONdistricts);
+                /*Log.i("JSON Array", " \n \n ");
+                System.out.println(districts_jsonArray);
+                Log.i("JSON Array", " \n \n ");
+                */
 
                 for (int i = 0; i < districts_jsonArray.length(); i++) {
                     JSONObject current_district = districts_jsonArray.getJSONObject(i);
@@ -287,39 +341,6 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
     }
 
     //End of getDistrictTask Class *******************************************************
-
-
-    public static class getVaccine extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            String result = "";
-            URL url;
-            HttpURLConnection urlConnection;
-            try {
-                url = new URL(urls[0]);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = urlConnection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(in);
-
-                int data = reader.read();
-                while (data != -1) {
-                    char c = (char) data;
-                    result += c;
-                    data = reader.read();
-                }
-                Log.i("VACCINATION DETAILS", result);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @NonNull
-        @Override
-        protected Object clone() throws CloneNotSupportedException {
-            return super.clone();
-        }
-    }
 
 
 }
