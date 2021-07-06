@@ -88,7 +88,7 @@ public class SearchByPincode_activity extends AppCompatActivity {
 
                 //ToDo: Add Something for the exception like when there are no vaccination centers for a pincode        --> Done on 06-07-2021
                 //ToDo: Add a progress bar/circle for showing while searching                                           --> Done on 06-07-2021
-                //ToDo: Also add the "Book Slot Button" in the "vaccine_center_layout_2.xml" and add a function to open the below link when this button is clicked
+                //ToDo: Also add the "Book Slot Button" in the "vaccine_center_layout_2.xml" and add a function to open the below link when this button is clicked  --> Done on 06-07-2021
                 //ToDo: https://selfregistration.cowin.gov.in/
 
             }

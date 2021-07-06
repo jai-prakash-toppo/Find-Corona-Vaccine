@@ -2,10 +2,12 @@ package com.myappcompany.jp.findcoronavaccine;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,10 +42,11 @@ public class VaccinationList_activity extends AppCompatActivity {
     ProgressBar vaccine_list_progressBar;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState){//, @Nullable PersistableBundle persistentState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {//, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState);//, persistentState);
         setContentView(R.layout.activity_vaccine_list);
         setTitle("Vaccine Centers");
+
 
         //Toast.makeText(getApplicationContext(),"HEY, Vaccine Centers", Toast.LENGTH_SHORT).show();
 
@@ -54,13 +57,13 @@ public class VaccinationList_activity extends AppCompatActivity {
 
         Log.i("LINE START", " \n\n");
         Log.i("VACCINELIST CLASS", "ENTERED");
-        Log.i("VACCINE URL",vaccine_url);
+        Log.i("VACCINE URL", vaccine_url);
         Log.i("LINE END", " \n\n");
 
         GetVaccine getVaccineDetails = new GetVaccine();
         getVaccineDetails.execute(vaccine_url);
 
-        vaccine_list_recyclerView= findViewById(R.id.vaccineList_recyclerView);
+        vaccine_list_recyclerView = findViewById(R.id.vaccineList_recyclerView);
         vaccine_adapter = new Vaccine_Adapter(centerList);
 
         noCenters = findViewById(R.id.centersNotFound_textView);
@@ -73,6 +76,8 @@ public class VaccinationList_activity extends AppCompatActivity {
 
         vaccine_list_recyclerView.setLayoutManager(new LinearLayoutManager(VaccinationList_activity.this));
         vaccine_list_recyclerView.setAdapter(vaccine_adapter);
+
+
 
 /*
 
@@ -138,6 +143,12 @@ Details for API Setu under JSONObject - sessions
 */
 
 
+    }
+
+    public void bookvaccineSlot(View view) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://selfregistration.cowin.gov.in/"));
+        startActivity(browserIntent);
+        //Toast.makeText(getApplicationContext(), "Button Clicked", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -297,8 +308,8 @@ Details for API Setu under JSONObject - sessions
 
                 vaccine_list_progressBar.setVisibility(View.INVISIBLE);
 
-                System.out.println(centerList +"\nSize : "+centerList.size());
-                if(centerList.size()!=0) {
+                System.out.println(centerList + "\nSize : " + centerList.size());
+                if (centerList.size() != 0) {
                     Comparator<Map<String, String>> vaccineComparator = new Comparator<Map<String, String>>() {
                         @Override
                         public int compare(Map<String, String> map1, Map<String, String> map2) {
@@ -308,8 +319,7 @@ Details for API Setu under JSONObject - sessions
 
                     Collections.sort(centerList, vaccineComparator);
                     vaccine_adapter.notifyDataSetChanged();
-                }
-                else {
+                } else {
                     vaccine_list_recyclerView.setVisibility(View.INVISIBLE);
                     noCenters.setVisibility(View.VISIBLE);
                 }

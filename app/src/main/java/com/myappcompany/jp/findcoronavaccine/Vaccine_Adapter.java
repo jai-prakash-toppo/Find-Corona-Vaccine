@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,8 +23,6 @@ public class Vaccine_Adapter extends RecyclerView.Adapter<Vaccine_Adapter.Vaccin
 
     public Vaccine_Adapter(ArrayList<Map<String, String>> centerList) {
         this.centers = centerList;
-
-
     }
 
     @NonNull
@@ -134,6 +134,8 @@ public class Vaccine_Adapter extends RecyclerView.Adapter<Vaccine_Adapter.Vaccin
         TextView dose1;
         TextView dose2;
 
+        Button bookSlot;
+
         public Vaccine_Center_ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -153,6 +155,8 @@ public class Vaccine_Adapter extends RecyclerView.Adapter<Vaccine_Adapter.Vaccin
             fee = itemView.findViewById(R.id.center_feetype_textView);
             dose1 = itemView.findViewById(R.id.center_dose1_textView);
             dose2 = itemView.findViewById(R.id.center_dose2_textView);
+
+            bookSlot = itemView.findViewById(R.id.bookslot_Button);
 
         }
     }
