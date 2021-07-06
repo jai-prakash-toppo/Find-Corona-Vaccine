@@ -4,8 +4,10 @@ package com.myappcompany.jp.findcoronavaccine;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -22,6 +24,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,13 +36,16 @@ public class VaccinationList_activity extends AppCompatActivity {
     RecyclerView vaccine_list_recyclerView;
     Vaccine_Adapter vaccine_adapter;
 
+    TextView noCenters;
+    ProgressBar vaccine_list_progressBar;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){//, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState);//, persistentState);
         setContentView(R.layout.activity_vaccine_list);
         setTitle("Vaccine Centers");
 
-        Toast.makeText(getApplicationContext(),"HEY, Vaccine Centers", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"HEY, Vaccine Centers", Toast.LENGTH_SHORT).show();
 
         centerList = new ArrayList<>();
 
@@ -50,11 +57,19 @@ public class VaccinationList_activity extends AppCompatActivity {
         Log.i("VACCINE URL",vaccine_url);
         Log.i("LINE END", " \n\n");
 
-        getVaccine getVaccineDetails = new getVaccine();
+        GetVaccine getVaccineDetails = new GetVaccine();
         getVaccineDetails.execute(vaccine_url);
 
         vaccine_list_recyclerView= findViewById(R.id.vaccineList_recyclerView);
         vaccine_adapter = new Vaccine_Adapter(centerList);
+
+        noCenters = findViewById(R.id.centersNotFound_textView);
+        vaccine_list_progressBar = findViewById(R.id.vaccineList_progressBar);
+
+        vaccine_list_progressBar.setVisibility(View.VISIBLE);
+
+        noCenters.setVisibility(View.INVISIBLE);
+        vaccine_list_recyclerView.setVisibility(View.VISIBLE);
 
         vaccine_list_recyclerView.setLayoutManager(new LinearLayoutManager(VaccinationList_activity.this));
         vaccine_list_recyclerView.setAdapter(vaccine_adapter);
@@ -127,7 +142,7 @@ Details for API Setu under JSONObject - sessions
 
 
     // getVaccine class to get vaccine details from APISetu
-    class getVaccine extends AsyncTask<String, Void, String> {
+    class GetVaccine extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
 
@@ -223,8 +238,7 @@ Details for API Setu under JSONObject - sessions
                         e.printStackTrace();
                     }//array
 
-                    //toDo: to separate vaccine into array vaccine
-                    //toDo: to separate slots into array slots
+                    //toDo: to separate slots into array slots  --> Done
 
                     centerList.get(centerList.size() - 1).put("center_id", center_id);                                                                      //1
                     centerList.get(centerList.size() - 1).put("name", name);                                                                                //2
@@ -281,9 +295,24 @@ Details for API Setu under JSONObject - sessions
 
                 }
 
-                System.out.println(centerList);
+                vaccine_list_progressBar.setVisibility(View.INVISIBLE);
 
-                vaccine_adapter.notifyDataSetChanged();
+                System.out.println(centerList +"\nSize : "+centerList.size());
+                if(centerList.size()!=0) {
+                    Comparator<Map<String, String>> vaccineComparator = new Comparator<Map<String, String>>() {
+                        @Override
+                        public int compare(Map<String, String> map1, Map<String, String> map2) {
+                            return map1.get("name").compareTo(map2.get("name"));
+                        }
+                    };
+
+                    Collections.sort(centerList, vaccineComparator);
+                    vaccine_adapter.notifyDataSetChanged();
+                }
+                else {
+                    vaccine_list_recyclerView.setVisibility(View.INVISIBLE);
+                    noCenters.setVisibility(View.VISIBLE);
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();

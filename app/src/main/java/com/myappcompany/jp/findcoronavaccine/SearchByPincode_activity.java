@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -26,6 +27,7 @@ public class SearchByPincode_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_by_pincode_activity);
+        setTitle("Select Pincode");
 
         pincodeText = "";
         pincode_date = "";
@@ -79,9 +81,16 @@ public class SearchByPincode_activity extends AppCompatActivity {
                 pincode_date = pincode_date_textView.getText().toString();
                 //https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=110001&date=31-03-2021
                 String pincode_url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincodeText+"&date="+pincode_date;
+                Log.i("PIN CODE URL", pincode_url);
                 Intent pincode_intent = new Intent(getApplicationContext(), VaccinationList_activity.class);
-                pincode_intent.putExtra("URL", pincode_url);
+                pincode_intent.putExtra("Vaccine URL", pincode_url);
                 startActivity(pincode_intent);
+
+                //ToDo: Add Something for the exception like when there are no vaccination centers for a pincode        --> Done on 06-07-2021
+                //ToDo: Add a progress bar/circle for showing while searching                                           --> Done on 06-07-2021
+                //ToDo: Also add the "Book Slot Button" in the "vaccine_center_layout_2.xml" and add a function to open the below link when this button is clicked
+                //ToDo: https://selfregistration.cowin.gov.in/
+
             }
         });
 

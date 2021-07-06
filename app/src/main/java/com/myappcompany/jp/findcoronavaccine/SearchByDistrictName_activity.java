@@ -60,6 +60,7 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_by_district_name_activity);
+        setTitle("Select District");
 
         state_Spinner = findViewById(R.id.state_Spinner);
         district_Spinner = findViewById(R.id.district_Spinner);
@@ -74,7 +75,7 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
                 "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir",
                 "Jharkhand", "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya",
                 "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
-                "Uttar Pradesh", "Uttarakhand", "West Bengal"};
+                "Uttar Pradesh", "Uttarakhand", "West Bengal"};     //Andaman and Nicobar Islands
 
         states_list = new ArrayList<>(Arrays.asList(states));
         districts_list = new ArrayList<>();
@@ -238,12 +239,12 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
 
         //Todo: able to get state and districts from the setu API      --> Done
         //Todo: now add the calendar to get the date for vaccine and   --> Done
-        //Todo: finish this method for search button                   --> Done But Not Happening
+        //Todo: finish this method for search button                   --> Done But Not Happening   --> Done on 28-06-2021
         //Todo: Create a RecylerView with CardView                     --> Done
-        //Todo: Retrive data from the JSON data received from SetuAPI  --> Done But Not Happening
+        //Todo: Retrive data from the JSON data received from SetuAPI  --> Done But Not Happening   --> Done on 28-06-2021
         //Todo : Store the data in the ArrayList as per their tag      --> Done
         //Todo : Show the Vaccination data on the RecyclerView         --> Done
-        //Todo: To search from setu API for vaccine using District API and show the avaliable slot in a new acitivity using card view and recycler view
+        //Todo: To search from setu API for vaccine using District API and show the avaliable slot in a new acitivity using card view and recycler view     --> Done
 
         String Vaccine_url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="
                 + Integer.toString(selected_district_id) + "&date=" + selected_date;                                                     // url to get details for the APISetu
