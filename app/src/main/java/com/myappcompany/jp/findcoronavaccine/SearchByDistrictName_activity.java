@@ -257,9 +257,14 @@ public class SearchByDistrictName_activity extends AppCompatActivity {
         //district_Spinner.endViewTransition(view);
         //state_Spinner.endViewTransition(view);
 
-        Intent vaccineDetails_intent = new Intent(SearchByDistrictName_activity.this, VaccinationList_activity.class);
-        vaccineDetails_intent.putExtra("Vaccine URL", Vaccine_url);
-        startActivity(vaccineDetails_intent);
+        if(selected_date.equals("")) {
+            Toast.makeText(getApplicationContext(), "Select Date", Toast.LENGTH_SHORT).show();
+        } else {
+
+            Intent vaccineDetails_intent = new Intent(SearchByDistrictName_activity.this, VaccinationList_activity.class);
+            vaccineDetails_intent.putExtra("Vaccine URL", Vaccine_url);
+            startActivity(vaccineDetails_intent);
+        }
 
         Log.i("SEARCH", "END");
 

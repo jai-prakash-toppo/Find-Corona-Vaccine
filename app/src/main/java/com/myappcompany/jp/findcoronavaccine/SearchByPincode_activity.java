@@ -11,12 +11,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
 public class SearchByPincode_activity extends AppCompatActivity {
 
-    String pincodeText;
+    String pincode_Text;
     String pincode_date;
 
     EditText pincode_editText;
@@ -29,7 +30,7 @@ public class SearchByPincode_activity extends AppCompatActivity {
         setContentView(R.layout.activity_search_by_pincode_activity);
         setTitle("Select Pincode");
 
-        pincodeText = "";
+        pincode_Text = "";
         pincode_date = "";
 
         pincode_editText = findViewById(R.id.pincode_editText);
@@ -77,14 +78,22 @@ public class SearchByPincode_activity extends AppCompatActivity {
         pincodeSearch_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pincodeText = pincode_editText.getText().toString();
+                pincode_Text = pincode_editText.getText().toString();
                 pincode_date = pincode_date_textView.getText().toString();
                 //https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=110001&date=31-03-2021
-                String pincode_url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincodeText+"&date="+pincode_date;
+                String pincode_url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pincode_Text+"&date="+pincode_date;
                 Log.i("PIN CODE URL", pincode_url);
-                Intent pincode_intent = new Intent(getApplicationContext(), VaccinationList_activity.class);
-                pincode_intent.putExtra("Vaccine URL", pincode_url);
-                startActivity(pincode_intent);
+                if(pincode_Text.equals("") && pincode_date.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Enter Pincode and Date", Toast.LENGTH_SHORT).show();
+                } else if(!pincode_date.equals("") && pincode_Text.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Pincode cannot be Empty!", Toast.LENGTH_SHORT).show();
+                } else if(!pincode_Text.equals("") && pincode_date.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Date cannot be Empty!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent pincode_intent = new Intent(getApplicationContext(), VaccinationList_activity.class);
+                    pincode_intent.putExtra("Vaccine URL", pincode_url);
+                    startActivity(pincode_intent);
+                }
 
                 //ToDo: Add Something for the exception like when there are no vaccination centers for a pincode        --> Done on 06-07-2021
                 //ToDo: Add a progress bar/circle for showing while searching                                           --> Done on 06-07-2021
